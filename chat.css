@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #e8f1ff, #f5f9ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main container */
+.chat-container {
+  width: 420px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.chat-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.chat-header p {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Language */
+.language-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.language-area select {
+  padding: 6px;
+  border-radius: 6px;
+}
+
+/* Chat box */
+#chat-box {
+  flex: 1;
+  overflow-y: auto;
+  background: #f7f9fc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Messages */
+.message {
+  max-width: 75%;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+.message.user {
+  background: #2563eb;
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.message.bot {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+
+.message.emergency {
+  background: #ffe6e6;
+  border: 2px solid red;
+  color: #b00000;
+  font-weight: bold;
+}
+
+/* Input */
+.input-area {
+  display: flex;
+  gap: 6px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e4fd1;
+}
+
+/* Actions */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+/* Disclaimer */
+.disclaimer {
+  font-size: 11px;
+  color: #777;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  width: 300px;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}

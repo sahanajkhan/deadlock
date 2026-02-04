@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Medical Lab Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #06b6d4;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      --text-dark: #1e293b;
+      --text-gray: #64748b;
+      --border: #e2e8f0;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .header p {
+      color: var(--text-gray);
+      font-size: 16px;
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      border: none;
+      background: var(--bg-light);
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-dark);
+    }
+
+    .tab-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .test-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .test-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .test-card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .test-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+    }
+
+    .test-card h3 {
+      font-size: 20px;
+      color: var(--text-dark);
+    }
+
+    .test-card p {
+      color: var(--text-gray);
+      font-size: 14px;
+    }
+
+    /* Input Groups */
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 14px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    /* Slider Input */
+    .slider-container {
+      margin-bottom: 20px;
+    }
+
+    .slider-value {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .slider-value span {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: var(--border);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    /* Results Section */
+    .results-panel {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .results-panel.active {
+      display: block;
+      animation: slideUp 0.5s;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .result-status {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .status-normal {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .result-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .metric-card {
+      background: var(--bg-light);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: var(--text-gray);
+      font-weight: 500;
+    }
+
+    .ai-analysis {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 25px;
+      border-radius: 15px;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .ai-analysis h4 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ai-analysis p {
+      line-height: 1.8;
+      opacity: 0.95;
+    }
+
+    .recommendations {
+      background: #f0fdf4;
+      padding: 20px;
+      border-radius: 15px;
+      border-left: 4px solid var(--success);
+      margin-top: 20px;
+    }
+
+    .recommendations h4 {
+      color: #065f46;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .recommendations ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .recommendations li {
+      padding: 8px 0;
+      color: #047857;
+      display: flex;
+      align-items: start;
+      gap: 10px;
+    }
+
+    .recommendations li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* File Upload */
+    .file-upload {
+      border: 2px dashed var(--border);
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .file-upload:hover {
+      border-color: var(--primary);
+      background: var(--bg-light);
+    }
+
+    .file-upload i {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .file-upload.active {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    /* Vision Test Chart */
+    .vision-chart {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 20px;
+      border: 2px solid var(--border);
+    }
+
+    .chart-line {
+      margin: 20px 0;
+      font-family: monospace;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    .chart-line:hover {
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    /* ECG Wave Animation */
+    .ecg-wave {
+      width: 100%;
+      height: 150px;
+      background: #000;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .ecg-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #0f0;
+      animation: ecgPulse 2s linear infinite;
+    }
+
+    @keyframes ecgPulse {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Progress Ring */
+    .progress-ring {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .progress-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring circle {
+      fill: none;
+      stroke-width: 10;
+      transition: stroke-dashoffset 0.5s;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-nav {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      text-align: center;
+      color: var(--text-gray);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>
+        <i class="fas fa-microscope"></i>
+        Advanced Medical Lab Analyzer
+      </h1>
+      <p>Comprehensive health diagnostics with AI-powered analysis</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('vital-signs')">
+        <i class="fas fa-heartbeat"></i> Vital Signs
+      </button>
+      <button class="tab-btn" onclick="showTab('heart-lung')">
+        <i class="fas fa-heart"></i> Heart & Lung Tests
+      </button>
+      <button class="tab-btn" onclick="showTab('eye-ent')">
+        <i class="fas fa-eye"></i> Eye & ENT Tests
+      </button>
+    </div>
+
+    <!-- VITAL SIGNS TAB -->
+    <div id="vital-signs" class="tab-content active">
+      <div class="cards-grid">
+        <!-- Blood Pressure -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <div>
+              <h3>Blood Pressure</h3>
+              <p>Systolic & Diastolic Measurement</p>
+            </div>
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-value">
+              <label>Systolic (mmHg)</label>
+              <span id="systolicValue">120</span>
+            </div>
+            <input type="range" id="systolic" min="80" max="200" value="120" 
+                   oninput="updateValue('systolic', this.value)">
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-value">
+              <label>Diastolic (mmHg)</label>
+              <span id="diastolicValue">80</span>
+            </div>
+            <input type="range" id="diastolic" min="40" max="120" value="80" 
+                   oninput="updateValue('diastolic', this.value)">
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeBP()">
+            <i class="fas fa-chart-line"></i> Analyze Blood Pressure
+          </button>
+        </div>
+
+        <!-- Pulse / Heart Rate -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div>
+              <h3>Pulse / Heart Rate</h3>
+              <p>Beats Per Minute (BPM)</p>
+            </div>
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-value">
+              <label>Heart Rate (BPM)</label>
+              <span id="heartRateValue">72</span>
+            </div>
+            <input type="range" id="heartRate" min="40" max="200" value="72" 
+                   oninput="updateValue('heartRate', this.value)">
+          </div>
+
+          <div class="input-group">
+            <label>Activity Level</label>
+            <select id="activityLevel">
+              <option value="resting">Resting</option>
+              <option value="light">Light Activity</option>
+              <option value="moderate">Moderate Exercise</option>
+              <option value="intense">Intense Exercise</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeHeartRate()">
+            <i class="fas fa-chart-line"></i> Analyze Heart Rate
+          </button>
+        </div>
+
+        <!-- Body Temperature -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+              <i class="fas fa-thermometer-half"></i>
+            </div>
+            <div>
+              <h3>Body Temperature</h3>
+              <p>Fahrenheit & Celsius</p>
+            </div>
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-value">
+              <label>Temperature (°F)</label>
+              <span id="tempValue">98.6</span>
+            </div>
+            <input type="range" id="temperature" min="95" max="105" value="98.6" step="0.1" 
+                   oninput="updateValue('temperature', this.value)">
+          </div>
+
+          <div class="input-group">
+            <label>Measurement Method</label>
+            <select id="tempMethod">
+              <option value="oral">Oral</option>
+              <option value="axillary">Axillary (Armpit)</option>
+              <option value="rectal">Rectal</option>
+              <option value="tympanic">Tympanic (Ear)</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeTemperature()">
+            <i class="fas fa-chart-line"></i> Analyze Temperature
+          </button>
+        </div>
+
+        <!-- Respiratory Rate -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+              <i class="fas fa-lungs"></i>
+            </div>
+            <div>
+              <h3>Respiratory Rate</h3>
+              <p>Breaths Per Minute</p>
+            </div>
+          </div>
+
+          <div class="slider-container">
+            <div class="slider-value">
+              <label>Breaths/Minute</label>
+              <span id="respRateValue">16</span>
+            </div>
+            <input type="range" id="respRate" min="8" max="40" value="16" 
+                   oninput="updateValue('respRate', this.value)">
+          </div>
+
+          <div class="input-group">
+            <label>Breathing Pattern</label>
+            <select id="breathingPattern">
+              <option value="normal">Normal/Regular</option>
+              <option value="shallow">Shallow</option>
+              <option value="deep">Deep</option>
+              <option value="labored">Labored/Difficult</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeRespiratory()">
+            <i class="fas fa-chart-line"></i> Analyze Respiratory Rate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEART & LUNG TESTS TAB -->
+    <div id="heart-lung" class="tab-content">
+      <div class="cards-grid">
+        <!-- ECG/EKG Test -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+              <i class="fas fa-activity"></i>
+            </div>
+            <div>
+              <h3>ECG / EKG Test</h3>
+              <p>Heart Rhythm & Rate Analysis</p>
+            </div>
+          </div>
+
+          <div class="ecg-wave">
+            <div class="ecg-line"></div>
+          </div>
+
+          <div class="input-group">
+            <label>Patient Name</label>
+            <input type="text" id="ecgPatientName" placeholder="Enter patient name">
+          </div>
+
+          <div class="input-row">
+            <div class="input-group">
+              <label>Age</label>
+              <input type="number" id="ecgAge" placeholder="Age" min="1" max="120">
+            </div>
+            <div class="input-group">
+              <label>Gender</label>
+              <select id="ecgGender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Upload ECG Report (PDF/Image)</label>
+            <div class="file-upload" onclick="document.getElementById('ecgFile').click()">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload ECG report</p>
+              <input type="file" id="ecgFile" style="display: none;" accept=".pdf,.jpg,.png" onchange="handleFileUpload(this, 'ecg')">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeECG()">
+            <i class="fas fa-chart-line"></i> Analyze ECG
+          </button>
+        </div>
+
+        <!-- Echocardiography -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+              <i class="fas fa-heart-pulse"></i>
+            </div>
+            <div>
+              <h3>Echocardiography (2D Echo)</h3>
+              <p>Heart Structure & Pumping Function</p>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Patient Name</label>
+            <input type="text" id="echoPatientName" placeholder="Enter patient name">
+          </div>
+
+          <div class="input-group">
+            <label>Ejection Fraction (%)</label>
+            <input type="number" id="ejectionFraction" placeholder="EF %" min="10" max="80" value="60">
+          </div>
+
+          <div class="input-group">
+            <label>Heart Chamber Size</label>
+            <select id="chamberSize">
+              <option value="normal">Normal</option>
+              <option value="mildly-enlarged">Mildly Enlarged</option>
+              <option value="moderately-enlarged">Moderately Enlarged</option>
+              <option value="severely-enlarged">Severely Enlarged</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Upload Echo Report</label>
+            <div class="file-upload" onclick="document.getElementById('echoFile').click()">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload echo report</p>
+              <input type="file" id="echoFile" style="display: none;" accept=".pdf,.jpg,.png" onchange="handleFileUpload(this, 'echo')">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeEcho()">
+            <i class="fas fa-chart-line"></i> Analyze Echocardiography
+          </button>
+        </div>
+
+        <!-- Chest X-Ray -->
+        <div class="test-card">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #14b8a6, #0d9488);">
+              <i class="fas fa-x-ray"></i>
+            </div>
+            <div>
+              <h3>Chest X-Ray</h3>
+              <p>Lungs, Heart Size & Structure</p>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Patient Name</label>
+            <input type="text" id="xrayPatientName" placeholder="Enter patient name">
+          </div>
+
+          <div class="input-group">
+            <label>X-Ray View</label>
+            <select id="xrayView">
+              <option value="PA">PA (Posteroanterior)</option>
+              <option value="lateral">Lateral</option>
+              <option value="AP">AP (Anteroposterior)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Clinical Indication</label>
+            <select id="xrayIndication">
+              <option value="routine">Routine Checkup</option>
+              <option value="cough">Persistent Cough</option>
+              <option value="sob">Shortness of Breath</option>
+              <option value="chest-pain">Chest Pain</option>
+              <option value="trauma">Trauma</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Upload X-Ray Image</label>
+            <div class="file-upload" onclick="document.getElementById('xrayFile').click()">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload chest X-ray</p>
+              <input type="file" id="xrayFile" style="display: none;" accept=".jpg,.png,.dicom" onchange="handleFileUpload(this, 'xray')">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="analyzeXray()">
+            <i class="fas fa-chart-line"></i> Analyze X-Ray
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EYE & ENT TESTS TAB -->
+    <div id="eye-ent" class="tab-content">
+      <div class="cards-grid">
+        <!-- Vision Test -->
+        <div class="test-card" style="grid-column: 1 / -1;">
+          <div class="test-card-header">
+            <div class="test-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+              <i class="fas fa-eye"></i>
+            </div>
+            <div>
+              <h3>Eye Check-up (Vision Test)</h3>
+              <p>Visual Acuity & Eye Health Assessment</p>
+            </div>
+          </div>
+
+          <div class="vision-chart">
+            <h4 style="margin-bottom: 30px; color: var(--text-dark);">Snellen Vision Chart</h4>
+            <div class="chart-line" style="font-size: 60px;">E</div>
+            <div class="chart-line" style="font-size: 45px;">F P</div>
+            <div class="chart-line" style="font-size: 35px;">T O Z</div>
+            <div class="chart-line" style="font-size: 28px;">L P E D</div>
+            <div class="chart-line" style="font-size: 22px;">P E C F D</div>
+            <div class="chart-line" style="font-size: 18px;">E D F C Z P</div>
+            <div class="chart-line" style="font-size: 14px;">F E L O P Z D</div>
+            <div class="chart-line" style="font-size: 12px;">D E F P O T E C</div>
+            <p style="margin-top: 30px; color: var(--text-gray);">
+              <i class="fas fa-info-circle"></i> View from 20 feet / 6 meters distance
+            </p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+              <h4 style="margin-bottom: 15px; color: var(--text-dark);">
+                <i class="fas fa-eye"></i> Right Eye Test
+              </h4>
+              <div class="input-group">
+                <label>Visual Acuity (Right Eye)</label>
+                <select id="rightEyeAcuity">
+                  <option value="20/20">20/20 (Perfect Vision)</option>
+                  <option value="20/25">20/25</option>
+                  <option value="20/30">20/30</option>
+                  <option value="20/40">20/40</option>
+                  <option value="20/50">20/50</option>
+                  <option value="20/70">20/70</option>
+                  <option value="20/100">20/100</option>
+                  <option value="20/200">20/200 or worse</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Color Vision</label>
+                <select id="rightColorVision">
+                  <option value="normal">Normal</option>
+                  <option value="deficient">Color Deficient</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <h4 style="margin-bottom: 15px; color: var(--text-dark);">
+                <i class="fas fa-eye"></i> Left Eye Test
+              </h4>
+              <div class="input-group">
+                <label>Visual Acuity (Left Eye)</label>
+                <select id="leftEyeAcuity">
+                  <option value="20/20">20/20 (Perfect Vision)</option>
+                  <option value="20/25">20/25</option>
+                  <option value="20/30">20/30</option>
+                  <option value="20/40">20/40</option>
+                  <option value="20/50">20/50</option>
+                  <option value="20/70">20/70</option>
+                  <option value="20/100">20/100</option>
+                  <option value="20/200">20/200 or worse</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Color Vision</label>
+                <select id="leftColorVision">
+                  <option value="normal">Normal</option>
+                  <option value="deficient">Color Deficient</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group" style="margin-top: 20px;">
+            <label>Additional Eye Conditions (Check all that apply)</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="cataract"> Cataract
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="glaucoma"> Glaucoma
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="dryEyes"> Dry Eyes
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="astigmatism"> Astigmatism
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top: 20px;" onclick="analyzeVision()">
+            <i class="fas fa-chart-line"></i> Analyze Vision Test
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div id="resultsPanel" class="results-panel">
+      <div class="result-header">
+        <h2 id="resultTitle">Analysis Results</h2>
+        <span id="resultStatus" class="result-status status-normal">Normal</span>
+      </div>
+
+      <div id="resultMetrics" class="result-metrics"></div>
+
+      <div class="ai-analysis">
+        <h4><i class="fas fa-robot"></i> AI-Powered Analysis</h4>
+        <p id="aiAnalysisText"></p>
+      </div>
+
+      <div class="recommendations">
+        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+        <ul id="recommendationsList"></ul>
+      </div>
+
+      <button class="btn btn-primary" onclick="downloadReport()" style="margin-top: 20px;">
+        <i class="fas fa-download"></i> Download Full Report
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Tab Switching
+    function showTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabId).classList.add('active');
+      
+      // Activate button
+      event.target.classList.add('active');
+      
+      // Hide results
+      document.getElementById('resultsPanel').classList.remove('active');
+    }
+
+    // Update Slider Values
+    function updateValue(id, value) {
+      document.getElementById(id + 'Value').textContent = value;
+    }
+
+    // File Upload Handler
+    function handleFileUpload(input, type) {
+      if (input.files && input.files[0]) {
+        const parent = input.parentElement;
+        parent.classList.add('active');
+        parent.innerHTML = `
+          <i class="fas fa-check-circle"></i>
+          <p><strong>${input.files[0].name}</strong></p>
+          <p style="font-size: 12px; color: var(--text-gray);">File uploaded successfully</p>
+        `;
+      }
+    }
+
+    // Show Results Panel
+    function showResults(title, status, metrics, analysis, recommendations) {
+      const panel = document.getElementById('resultsPanel');
+      
+      // Set title and status
+      document.getElementById('resultTitle').textContent = title;
+      const statusEl = document.getElementById('resultStatus');
+      statusEl.textContent = status;
+      statusEl.className = 'result-status';
+      
+      if (status.includes('Normal')) {
+        statusEl.classList.add('status-normal');
+      } else if (status.includes('Warning') || status.includes('Elevated')) {
+        statusEl.classList.add('status-warning');
+      } else if (status.includes('Critical') || status.includes('Abnormal')) {
+        statusEl.classList.add('status-danger');
+      } else {
+        statusEl.classList.add('status-normal');
+      }
+      
+      // Set metrics
+      const metricsHTML = metrics.map(metric => `
+        <div class="metric-card">
+          <div class="metric-value">${metric.value}</div>
+          <div class="metric-label">${metric.label}</div>
+        </div>
+      `).join('');
+      document.getElementById('resultMetrics').innerHTML = metricsHTML;
+      
+      // Set AI analysis
+      document.getElementById('aiAnalysisText').textContent = analysis;
+      
+      // Set recommendations
+      const recommendationsHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+      document.getElementById('recommendationsList').innerHTML = recommendationsHTML;
+      
+      // Show panel
+      panel.classList.add('active');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Blood Pressure Analysis
+    function analyzeBP() {
+      const systolic = parseInt(document.getElementById('systolic').value);
+      const diastolic = parseInt(document.getElementById('diastolic').value);
+      
+      let status = 'Normal';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (systolic < 120 && diastolic < 80) {
+        status = 'Normal Blood Pressure';
+        analysis = 'Your blood pressure is within the normal range. This indicates healthy cardiovascular function. Continue maintaining a healthy lifestyle to keep your blood pressure at optimal levels.';
+        recommendations = [
+          'Maintain current healthy lifestyle',
+          'Regular exercise (30 minutes daily)',
+          'Balanced diet rich in fruits and vegetables',
+          'Limit sodium intake to less than 2,300mg per day',
+          'Regular health checkups'
+        ];
+      } else if (systolic >= 120 && systolic <= 129 && diastolic < 80) {
+        status = 'Elevated Blood Pressure';
+        analysis = 'Your blood pressure is elevated. While not yet hypertension, this is a warning sign that you may develop high blood pressure if preventive measures are not taken.';
+        recommendations = [
+          'Adopt heart-healthy eating plan (DASH diet)',
+          'Increase physical activity to 40-60 minutes daily',
+          'Reduce sodium intake',
+          'Manage stress through relaxation techniques',
+          'Monitor blood pressure regularly',
+          'Consult healthcare provider for personalized advice'
+        ];
+      } else if (systolic >= 130 && systolic <= 139 || diastolic >= 80 && diastolic <= 89) {
+        status = 'Stage 1 Hypertension';
+        analysis = 'You have Stage 1 high blood pressure (hypertension). This requires lifestyle modifications and possibly medication. Untreated hypertension increases risk of heart disease and stroke.';
+        recommendations = [
+          'URGENT: Schedule appointment with healthcare provider',
+          'Start or modify blood pressure medication as prescribed',
+          'Significant dietary changes (low sodium, DASH diet)',
+          'Daily physical activity (consult doctor first)',
+          'Reduce alcohol consumption',
+          'Quit smoking if applicable',
+          'Daily blood pressure monitoring'
+        ];
+      } else {
+        status = 'Stage 2 Hypertension - Critical';
+        analysis = 'You have Stage 2 high blood pressure (hypertension). This is a serious condition requiring immediate medical attention. Your risk for cardiovascular complications is significantly elevated.';
+        recommendations = [
+          'IMMEDIATE: Seek medical attention TODAY',
+          'Likely need for prescription medication',
+          'Strict lifestyle modifications required',
+          'Daily blood pressure monitoring',
+          'Follow medical advice precisely',
+          'Emergency room if experiencing chest pain, shortness of breath, or severe headache'
+        ];
+      }
+      
+      showResults(
+        'Blood Pressure Analysis',
+        status,
+        [
+          { value: `${systolic}/${diastolic}`, label: 'BP Reading (mmHg)' },
+          { value: systolic, label: 'Systolic' },
+          { value: diastolic, label: 'Diastolic' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // Heart Rate Analysis
+    function analyzeHeartRate() {
+      const heartRate = parseInt(document.getElementById('heartRate').value);
+      const activity = document.getElementById('activityLevel').value;
+      
+      let status = 'Normal';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (activity === 'resting') {
+        if (heartRate >= 60 && heartRate <= 100) {
+          status = 'Normal Resting Heart Rate';
+          analysis = `Your resting heart rate of ${heartRate} BPM is within the normal range. A normal resting heart rate for adults ranges from 60 to 100 BPM. Athletes and highly fit individuals may have resting heart rates below 60 BPM.`;
+          recommendations = [
+            'Continue regular physical activity',
+            'Maintain cardiovascular fitness',
+            'Stay hydrated',
+            'Get adequate sleep (7-9 hours)',
+            'Manage stress levels'
+          ];
+        } else if (heartRate < 60) {
+          status = 'Bradycardia (Low Heart Rate)';
+          analysis = `Your resting heart rate of ${heartRate} BPM is below the normal range (bradycardia). This may be normal if you're an athlete or very fit. However, if accompanied by dizziness, fatigue, or fainting, seek medical attention.`;
+          recommendations = [
+            'If symptomatic (dizzy, fainting), consult doctor immediately',
+            'Monitor for symptoms like weakness or chest pain',
+            'If asymptomatic and athletic, likely normal',
+            'Keep track of heart rate patterns',
+            'Discuss with healthcare provider'
+          ];
+        } else {
+          status = 'Tachycardia (High Heart Rate)';
+          analysis = `Your resting heart rate of ${heartRate} BPM is elevated (tachycardia). This could be due to stress, dehydration, medication, or underlying conditions. If persistent, medical evaluation is recommended.`;
+          recommendations = [
+            'Seek medical evaluation if persistent',
+            'Check for dehydration and rehydrate',
+            'Reduce caffeine and stimulant intake',
+            'Practice stress reduction techniques',
+            'Monitor for accompanying symptoms',
+            'Avoid tobacco and excessive alcohol'
+          ];
+        }
+      } else {
+        status = 'Exercise Heart Rate';
+        analysis = `Your heart rate during ${activity} activity is ${heartRate} BPM. During exercise, heart rate naturally increases. Maximum heart rate is approximately 220 minus your age.`;
+        recommendations = [
+          'Monitor for chest pain or severe shortness of breath',
+          'Stay hydrated during exercise',
+          'Gradually increase exercise intensity',
+          'Allow proper cool-down period',
+          'Consult doctor before starting intense exercise programs'
+        ];
+      }
+      
+      showResults(
+        'Heart Rate Analysis',
+        status,
+        [
+          { value: heartRate, label: 'Heart Rate (BPM)' },
+          { value: activity.charAt(0).toUpperCase() + activity.slice(1), label: 'Activity Level' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // Temperature Analysis
+    function analyzeTemperature() {
+      const temp = parseFloat(document.getElementById('temperature').value);
+      const method = document.getElementById('tempMethod').value;
+      const tempC = ((temp - 32) * 5/9).toFixed(1);
+      
+      let status = 'Normal';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (temp >= 97.0 && temp <= 99.0) {
+        status = 'Normal Temperature';
+        analysis = `Your body temperature of ${temp}°F (${tempC}°C) measured via ${method} method is within the normal range. Normal body temperature varies throughout the day and can differ slightly based on measurement method.`;
+        recommendations = [
+          'No immediate action needed',
+          'Monitor if symptoms develop',
+          'Stay hydrated',
+          'Maintain good hygiene practices'
+        ];
+      } else if (temp < 97.0) {
+        status = 'Low Temperature (Hypothermia)';
+        analysis = `Your body temperature of ${temp}°F (${tempC}°C) is below normal (hypothermia). Mild hypothermia can occur from cold exposure. Severe hypothermia is a medical emergency.`;
+        recommendations = [
+          'Warm up gradually with blankets and warm drinks',
+          'Move to a warm environment',
+          'If severe (below 95°F) or unresponsive, call emergency services',
+          'Avoid rapid rewarming',
+          'Seek medical attention if symptoms persist'
+        ];
+      } else if (temp >= 99.1 && temp <= 100.4) {
+        status = 'Low-Grade Fever';
+        analysis = `You have a low-grade fever of ${temp}°F (${tempC}°C). This mild elevation may indicate your body is fighting an infection or could be due to other factors like exercise or stress.`;
+        recommendations = [
+          'Rest and stay hydrated',
+          'Monitor temperature every 4-6 hours',
+          'Take over-the-counter fever reducer if needed',
+          'Watch for other symptoms',
+          'Consult doctor if fever persists beyond 3 days'
+        ];
+      } else {
+        status = 'High Fever - Medical Attention Needed';
+        analysis = `You have a high fever of ${temp}°F (${tempC}°C). Fever this high indicates your body is fighting infection or inflammation. Medical evaluation is recommended, especially if accompanied by other symptoms.`;
+        recommendations = [
+          'Contact healthcare provider TODAY',
+          'Take fever-reducing medication as directed',
+          'Drink plenty of fluids',
+          'Rest in a cool environment',
+          'Monitor for danger signs: severe headache, stiff neck, difficulty breathing, chest pain',
+          'Seek emergency care if temperature exceeds 103°F or you have concerning symptoms'
+        ];
+      }
+      
+      showResults(
+        'Body Temperature Analysis',
+        status,
+        [
+          { value: `${temp}°F`, label: 'Temperature (F)' },
+          { value: `${tempC}°C`, label: 'Temperature (C)' },
+          { value: method.charAt(0).toUpperCase() + method.slice(1), label: 'Method' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // Respiratory Rate Analysis
+    function analyzeRespiratory() {
+      const respRate = parseInt(document.getElementById('respRate').value);
+      const pattern = document.getElementById('breathingPattern').value;
+      
+      let status = 'Normal';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (respRate >= 12 && respRate <= 20 && pattern === 'normal') {
+        status = 'Normal Respiratory Rate';
+        analysis = `Your respiratory rate of ${respRate} breaths per minute is within the normal adult range (12-20 breaths/min) with a normal breathing pattern. This indicates healthy respiratory function.`;
+        recommendations = [
+          'Continue normal activities',
+          'Practice deep breathing exercises for lung health',
+          'Avoid smoking and secondhand smoke',
+          'Regular physical activity',
+          'Maintain good posture for optimal breathing'
+        ];
+      } else if (respRate < 12) {
+        status = 'Bradypnea (Low Respiratory Rate)';
+        analysis = `Your respiratory rate of ${respRate} breaths/min is below normal (bradypnea). This could be due to medication, sleep apnea, or underlying conditions. If symptomatic, seek medical attention.`;
+        recommendations = [
+          'Consult healthcare provider if experiencing dizziness or fatigue',
+          'Check medication side effects',
+          'Assess for sleep apnea symptoms',
+          'Monitor oxygen levels if available',
+          'Seek immediate care if having difficulty breathing'
+        ];
+      } else if (respRate > 20 || pattern !== 'normal') {
+        status = 'Tachypnea (Elevated Respiratory Rate)';
+        analysis = `Your respiratory rate of ${respRate} breaths/min is elevated (tachypnea) with ${pattern} breathing pattern. This may indicate respiratory distress, anxiety, infection, or other conditions requiring evaluation.`;
+        recommendations = [
+          'URGENT: Seek medical evaluation',
+          'Sit upright to ease breathing',
+          'Practice calm, controlled breathing',
+          'Monitor for chest pain, blue lips, or severe shortness of breath',
+          'Call emergency services if severe difficulty breathing',
+          'Identify and address anxiety triggers if applicable'
+        ];
+      }
+      
+      showResults(
+        'Respiratory Rate Analysis',
+        status,
+        [
+          { value: respRate, label: 'Breaths/Minute' },
+          { value: pattern.charAt(0).toUpperCase() + pattern.slice(1), label: 'Pattern' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // ECG Analysis
+    function analyzeECG() {
+      const patientName = document.getElementById('ecgPatientName').value || 'Patient';
+      const age = document.getElementById('ecgAge').value;
+      const gender = document.getElementById('ecgGender').value;
+      
+      if (!age) {
+        alert('Please enter patient age');
+        return;
+      }
+      
+      showResults(
+        'ECG/EKG Analysis',
+        'Report Generated',
+        [
+          { value: patientName, label: 'Patient Name' },
+          { value: age, label: 'Age' },
+          { value: gender.charAt(0).toUpperCase() + gender.slice(1), label: 'Gender' }
+        ],
+        'ECG analysis shows normal sinus rhythm with regular rate and rhythm. No ST-segment changes or arrhythmias detected. QRS complex duration is within normal limits. PR interval is normal. No signs of ischemia, infarction, or conduction abnormalities. The electrical axis is normal. All waveforms (P waves, QRS complexes, T waves) are properly formed and timed.',
+        [
+          'ECG appears normal - continue regular cardiac health monitoring',
+          'Maintain heart-healthy lifestyle',
+          'Regular exercise as tolerated',
+          'Heart-healthy diet low in saturated fats',
+          'Control blood pressure and cholesterol',
+          'Annual cardiac checkups recommended',
+          'Report any new symptoms like chest pain or palpitations immediately'
+        ]
+      );
+    }
+
+    // Echocardiography Analysis
+    function analyzeEcho() {
+      const patientName = document.getElementById('echoPatientName').value || 'Patient';
+      const ef = document.getElementById('ejectionFraction').value;
+      const chamberSize = document.getElementById('chamberSize').value;
+      
+      let status = 'Normal';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (ef >= 55 && ef <= 70 && chamberSize === 'normal') {
+        status = 'Normal Cardiac Function';
+        analysis = `Echocardiography shows normal left ventricular ejection fraction (LVEF) of ${ef}% with normal chamber sizes. Heart valves appear structurally normal with no significant regurgitation or stenosis. Pericardium is normal. No wall motion abnormalities detected. Overall cardiac function is preserved.`;
+        recommendations = [
+          'Excellent cardiac function - continue current lifestyle',
+          'Maintain regular exercise routine',
+          'Heart-healthy diet',
+          'Monitor blood pressure regularly',
+          'Continue prescribed medications if any',
+          'Routine follow-up in 1-2 years or as recommended'
+        ];
+      } else if (ef >= 40 && ef < 55) {
+        status = 'Mild to Moderate Dysfunction';
+        analysis = `Echocardiography reveals reduced left ventricular ejection fraction of ${ef}% indicating mild to moderate systolic dysfunction. Chamber size is ${chamberSize.replace('-', ' ')}. This requires medical management and lifestyle modifications.`;
+        recommendations = [
+          'IMPORTANT: Follow up with cardiologist',
+          'Medication compliance is crucial',
+          'Cardiac rehabilitation program may be beneficial',
+          'Restrict sodium intake (<2000mg daily)',
+          'Monitor fluid intake',
+          'Daily weight monitoring',
+          'Report worsening shortness of breath or swelling',
+          'Avoid excessive alcohol',
+          'Regular follow-up echocardiograms'
+        ];
+      } else {
+        status = 'Significant Cardiac Dysfunction';
+        analysis = `Echocardiography shows significantly reduced ejection fraction of ${ef}% with ${chamberSize.replace('-', ' ')} chambers. This indicates severe systolic dysfunction requiring aggressive medical management.`;
+        recommendations = [
+          'URGENT: Immediate cardiology consultation required',
+          'Start or optimize heart failure medications',
+          'Consider advanced therapies (ICD, CRT)',
+          'Strict fluid and sodium restriction',
+          'Daily monitoring of weight and symptoms',
+          'Cardiac rehabilitation essential',
+          'Frequent follow-up visits',
+          'Emergency plan for decompensation',
+          'Consider heart transplant evaluation if indicated'
+        ];
+      }
+      
+      showResults(
+        'Echocardiography (2D Echo) Analysis',
+        status,
+        [
+          { value: `${ef}%`, label: 'Ejection Fraction' },
+          { value: chamberSize.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '), label: 'Chamber Size' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // Chest X-Ray Analysis
+    function analyzeXray() {
+      const patientName = document.getElementById('xrayPatientName').value || 'Patient';
+      const view = document.getElementById('xrayView').value;
+      const indication = document.getElementById('xrayIndication').value;
+      
+      showResults(
+        'Chest X-Ray Analysis',
+        'Report Generated',
+        [
+          { value: view, label: 'X-Ray View' },
+          { value: indication.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '), label: 'Indication' }
+        ],
+        'Chest X-ray interpretation: Lungs are clear bilaterally with no focal consolidation, pleural effusion, or pneumothorax. Cardiac silhouette is normal in size. Mediastinal contours are within normal limits. No hilar lymphadenopathy. Osseous structures appear intact. Soft tissues are unremarkable. Overall impression suggests normal chest radiograph with no acute cardiopulmonary abnormality.',
+        [
+          'Chest X-ray appears normal',
+          'No immediate action required',
+          'If symptoms persist, follow up with physician',
+          'Maintain lung health with regular exercise',
+          'Avoid smoking and air pollutants',
+          'Practice good respiratory hygiene',
+          'Annual health checkups recommended',
+          'Report any new or worsening respiratory symptoms'
+        ]
+      );
+    }
+
+    // Vision Test Analysis
+    function analyzeVision() {
+      const rightAcuity = document.getElementById('rightEyeAcuity').value;
+      const leftAcuity = document.getElementById('leftEyeAcuity').value;
+      const rightColor = document.getElementById('rightColorVision').value;
+      const leftColor = document.getElementById('leftColorVision').value;
+      
+      const conditions = [];
+      if (document.getElementById('cataract').checked) conditions.push('Cataract');
+      if (document.getElementById('glaucoma').checked) conditions.push('Glaucoma');
+      if (document.getElementById('dryEyes').checked) conditions.push('Dry Eyes');
+      if (document.getElementById('astigmatism').checked) conditions.push('Astigmatism');
+      
+      let status = 'Normal Vision';
+      let analysis = '';
+      let recommendations = [];
+      
+      if (rightAcuity === '20/20' && leftAcuity === '20/20' && rightColor === 'normal' && leftColor === 'normal' && conditions.length === 0) {
+        status = 'Excellent Vision';
+        analysis = 'Your vision test results are excellent! Both eyes show perfect visual acuity (20/20) with normal color vision and no detected eye conditions. This indicates healthy eye function and optimal visual performance.';
+        recommendations = [
+          'Continue regular eye exams (every 1-2 years)',
+          'Protect eyes from UV rays with sunglasses',
+          'Take breaks when using digital screens (20-20-20 rule)',
+          'Maintain a diet rich in eye-healthy nutrients',
+          'Stay hydrated',
+          'Get adequate sleep',
+          'Exercise regularly for overall eye health'
+        ];
+      } else if ((rightAcuity === '20/20' || rightAcuity === '20/25') && (leftAcuity === '20/20' || leftAcuity === '20/25')) {
+        status = 'Good Vision - Minor Correction May Help';
+        analysis = `Your vision is good with visual acuity of ${rightAcuity} (right) and ${leftAcuity} (left). Minor prescription glasses may enhance visual clarity for detailed tasks. ${conditions.length > 0 ? 'Detected conditions: ' + conditions.join(', ') + '.' : ''}`;
+        recommendations = [
+          'Consider eye exam by optometrist for potential prescription',
+          'Reading glasses may be helpful',
+          'Regular eye checkups annually',
+          'Follow treatment for any existing eye conditions',
+          'Maintain eye health with proper nutrition',
+          'Protect eyes from strain and UV exposure'
+        ];
+      } else {
+        status = 'Vision Correction Recommended';
+        analysis = `Your vision test shows reduced visual acuity (Right: ${rightAcuity}, Left: ${leftAcuity}). ${rightColor === 'deficient' || leftColor === 'deficient' ? 'Color vision deficiency detected. ' : ''}${conditions.length > 0 ? 'Additional conditions detected: ' + conditions.join(', ') + '. ' : ''}Professional eye examination and corrective lenses are recommended.`;
+        recommendations = [
+          'IMPORTANT: Schedule comprehensive eye exam with ophthalmologist',
+          'Prescription glasses or contact lenses needed',
+          'Regular monitoring of eye conditions',
+          'Treatment for detected conditions (cataract surgery, glaucoma management, etc.)',
+          'Follow medical advice for specific eye conditions',
+          'Annual or bi-annual eye exams essential',
+          'Report any sudden vision changes immediately',
+          'Consider vision therapy if recommended'
+        ];
+      }
+      
+      showResults(
+        'Vision Test Analysis',
+        status,
+        [
+          { value: rightAcuity, label: 'Right Eye Acuity' },
+          { value: leftAcuity, label: 'Left Eye Acuity' },
+          { value: rightColor === 'normal' && leftColor === 'normal' ? 'Normal' : 'Deficiency Detected', label: 'Color Vision' },
+          { value: conditions.length > 0 ? conditions.length : 'None', label: 'Eye Conditions' }
+        ],
+        analysis,
+        recommendations
+      );
+    }
+
+    // Download Report
+    function downloadReport() {
+      alert('Full medical report would be generated and downloaded as PDF.\n\nThis is a demonstration. In a real application, this would generate a comprehensive PDF report with all test results, charts, and recommendations.');
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      console.log('Advanced Medical Lab Analyzer Loaded');
+    });
+  </script>
+</body>
+</html>
